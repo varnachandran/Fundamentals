@@ -1,6 +1,19 @@
+import unittest
+
 def reverse_c_style_string(a):
     answer=a[:-1]
     answer=answer[::-1] + '\0'
     return answer
 
 print(reverse_c_style_string('bymi\0'))
+
+class Test(unittest.TestCase):
+    data='bymi\0'
+
+    def test_reverse_string(self):
+        actual= reverse_c_style_string(self.data)
+        self.assertEqual(actual,'imyb\x00')
+
+if __name__ == "__main__":
+    unittest.main()
+
