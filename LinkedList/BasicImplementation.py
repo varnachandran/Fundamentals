@@ -71,6 +71,25 @@ class LinkedList:
                 runner = runner.next
             current = current.next
 
+    def get_nth_to_last_element_without_recursion(self, n):
+        if not self.head:
+            return -1
+
+        current= self.head
+        runner= self.head
+
+        for i in range(n):
+            if not runner:
+                return -1
+            runner = runner.next
+
+        while runner.next is not None:
+            current = current.next
+            runner = runner.next
+        return current.next.value
+
+
+
 
 class Test(unittest.TestCase):
     def setUp(self):
@@ -152,6 +171,21 @@ class Test(unittest.TestCase):
             current =current.next
 
         self.assertEqual(expected_list_of_values, actual_list)
+
+    def testcase_get_nth_to_last_element_without_recursion_should_return_correctly(self):
+        self.create_list_with_duplicate_values()
+        nth_to_last_element = self.linked_list.get_nth_to_last_element_without_recursion(5)
+        self.assertEqual(2, nth_to_last_element)
+
+    def testcase_get_nth_to_last_element_without_recursion_should_return_negative_one(self):
+        self.linked_list = LinkedList()
+        nth_to_last_element = self.linked_list.get_nth_to_last_element_without_recursion(5)
+        self.assertEqual(-1, nth_to_last_element)
+
+    def testcase_get_nth_to_last_element_without_recursion_should_return_negative_one_when_n_is_larger_than_size(self):
+        self.create_list_with_duplicate_values()
+        nth_to_last_element = self.linked_list.get_nth_to_last_element_without_recursion(15)
+        self.assertEqual(-1, nth_to_last_element)
 
 if __name__=='__main__':
     unittest.main()
