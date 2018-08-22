@@ -53,14 +53,45 @@ class LinkedList:
                 previous.next = current.next
             current = current.next
 
+    def remove_duplicates_without_additional_buffer(self):
+        if not self.head:
+            return -1
 
+        current = self.head
 
+        while current:
+            previous = current
+            runner = current.next
+
+            while runner:
+                if runner.value == current.value:
+                    previous.next = runner.next
+
+                previous = previous.next
+                runner = runner.next
+            current = current.next
 
 
 class Test(unittest.TestCase):
     def setUp(self):
         self.node = Node(1)
         self.linked_list = LinkedList(self.node)
+
+    def create_list_with_duplicate_values(self):
+        node2 = Node(2)
+        self.linked_list.append_node(node2)
+
+        node3 = Node(1)
+        self.linked_list.append_node(node3)
+
+        node4 = Node(3)
+        self.linked_list.append_node(node4)
+
+        node5 = Node(2)
+        self.linked_list.append_node(node5)
+
+        node6 = Node(6)
+        self.linked_list.append_node(node6)
 
     def testcase_should_create_node_in_linkedlist(self):
 
@@ -107,6 +138,20 @@ class Test(unittest.TestCase):
         self.linked_list.remove_duplicates()
         self.assertEqual(self.linked_list.head.next.next, None)
 
+    def testcase_removing_duplicates_without_buffer_should_be_successful(self):
+        self.create_list_with_duplicate_values()
+        self.linked_list.remove_duplicates_without_additional_buffer()
+
+        expected_list_of_values=[1,2,3,6]
+
+        current= self.linked_list.head
+        actual_list=[]
+
+        while current:
+            actual_list.append(current.value)
+            current =current.next
+
+        self.assertEqual(expected_list_of_values, actual_list)
 
 if __name__=='__main__':
     unittest.main()
