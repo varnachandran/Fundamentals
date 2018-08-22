@@ -75,8 +75,8 @@ class LinkedList:
         if not self.head:
             return -1
 
-        current= self.head
-        runner= self.head
+        current = self.head
+        runner = self.head
 
         for i in range(n):
             if not runner:
@@ -87,6 +87,23 @@ class LinkedList:
             current = current.next
             runner = runner.next
         return current.next.value
+
+    def find_n_to_last(self, n):
+        """Returns nth to last element from the linked list."""
+        node = self.head
+        count = [0]
+        return self.find_n_to_last_helper(node, n - 1, count)
+
+    def find_n_to_last_helper(self, node, n, count):
+        if not node:
+            return None
+
+        result = self.find_n_to_last_helper(node.next, n, count)
+        if count[0] == n:
+            result = node.value
+
+        count[0] += 1
+        return result
 
 
 
@@ -174,15 +191,15 @@ class Test(unittest.TestCase):
 
     def testcase_get_nth_to_last_element_without_recursion_should_return_correctly(self):
         self.create_list_with_duplicate_values()
-        nth_to_last_element = self.linked_list.get_nth_to_last_element_without_recursion(5)
-        self.assertEqual(2, nth_to_last_element)
+        nth_to_last_element = self.linked_list.find_n_to_last(6)
+        self.assertEqual(1, nth_to_last_element)
 
     def testcase_get_nth_to_last_element_without_recursion_should_return_negative_one(self):
         self.linked_list = LinkedList()
         nth_to_last_element = self.linked_list.get_nth_to_last_element_without_recursion(5)
         self.assertEqual(-1, nth_to_last_element)
 
-    def testcase_get_nth_to_last_element_without_recursion_should_return_negative_one_when_n_is_larger_than_size(self):
+    def testcase_get_nth_to_last_element_with_recursion_should_return_negative_one_when_n_is_larger_than_size(self):
         self.create_list_with_duplicate_values()
         nth_to_last_element = self.linked_list.get_nth_to_last_element_without_recursion(15)
         self.assertEqual(-1, nth_to_last_element)
