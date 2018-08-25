@@ -105,6 +105,19 @@ class LinkedList:
         count[0] += 1
         return result
 
+    def get_nth_node_from_last(self, n):
+        (count, result)= self.get_nth_node_from_last_helper(self.head, n-1)
+        return result
+
+    def get_nth_node_from_last_helper(self, current, n):
+        if current is None:
+            return (0, None)
+        (count, result) = self.get_nth_node_from_last_helper(current.next, n)
+        if count==n:
+            result = current.value
+        count= count+1
+        return (count, result)
+
 
 
 
@@ -191,7 +204,12 @@ class Test(unittest.TestCase):
 
     def testcase_get_nth_to_last_element_without_recursion_should_return_correctly(self):
         self.create_list_with_duplicate_values()
-        nth_to_last_element = self.linked_list.find_n_to_last(6)
+        node9=Node(9)
+        node11=Node(11)
+        self.linked_list.append_node(node9)
+        self.linked_list.append_node(node11)
+        #nth_to_last_element = self.linked_list.get_nth_node_from_last(5)
+        nth_to_last_element = self.linked_list.get_nth_node_from_last(8)
         self.assertEqual(1, nth_to_last_element)
 
     def testcase_get_nth_to_last_element_without_recursion_should_return_negative_one(self):
