@@ -142,6 +142,43 @@ class LinkedList:
         else:
             self.head = None
 
+    def add_two_inverted_linked_lists(self, l1, l2):
+        self.add_two_inverted_linked_lists_helper(l1, l2)
+
+    def add_two_inverted_linked_lists_helper(self, current_l1, current_l2, carry=0):
+        current_l1_is_not_empty = current_l1 is not None
+        current_l2_is_not_empty = current_l2 is not None
+
+        if current_l1_is_not_empty and current_l2_is_not_empty:
+            sum = (current_l1.value + current_l2.value) + carry
+        elif not current_l1_is_not_empty:
+            if not current_l2_is_not_empty:
+                return
+            sum= current_l2.value+ carry
+        elif not current_l2_is_not_empty:
+            if not current_l1_is_not_empty:
+                return
+            sum= current_l1.value+ carry
+        elif not current_l1_is_not_empty and not current_l2_is_not_empty:
+            return
+        if sum >= 10:
+            carry =1
+            sum= sum-10
+        else:
+            carry=0
+        if self.head is None:
+            self.head= Node(sum)
+        else:
+            new_node=Node(sum)
+            temp= self.head
+            self.head= new_node
+            new_node.next = temp
+
+        return self.add_two_inverted_linked_lists_helper(current_l1.next if current_l1 is not None else None,
+                                                         current_l2.next if current_l2 is not None else None,
+                                                         carry)
+
+
 
 class Test(unittest.TestCase):
     def setUp(self):
@@ -259,6 +296,28 @@ class Test(unittest.TestCase):
         self.linked_list.delete_element_in_middle()
         elements_in_list = self.return_items()
         self.assertEqual(elements_in_list, [1, 2, 1, 2, 6, 9])
+
+    def testcase_add_inverted_linked_lists(self):
+        node3 = Node(3)
+        node1 = Node(1)
+        node5 = Node(5)
+        self.linked_list1 = LinkedList(node3)
+        self.linked_list1.append_node(node1)
+        self.linked_list1.append_node(node5)
+        self.linked_list1.append_node(Node(6))
+
+        node9 = Node(9)
+        node2 = Node(2)
+        self.linked_list2 = LinkedList(Node(5))
+        self.linked_list2.append_node(node9)
+        self.linked_list2.append_node(node2)
+
+        self.linked_list= LinkedList()
+
+        self.linked_list.add_two_inverted_linked_lists(self.linked_list1.head, self.linked_list2.head)
+        elements_in_list = self.return_items()
+        self.assertEqual([6,8,0,8], elements_in_list)
+
 
 if __name__=='__main__':
     unittest.main()
