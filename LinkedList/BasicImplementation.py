@@ -118,13 +118,43 @@ class LinkedList:
         count= count+1
         return (count, result)
 
+    def delete_element_in_middle(self):
+        if self.head is None:
+            return -1
+        current = self.head
+        p2position=0
 
+        while current.next is not None:
+            current= current.next
+            p2position = p2position+1
+
+        p1 = self.head
+        previous = None
+        p1position = 0
+        while p2position != p1position:
+            previous= p1
+            p1 = p1.next
+            p1position = p1position+1
+            p2position = p2position-1
+        if p1.next:
+            previous.next = p1.next
+            p1.next = None
+        else:
+            self.head = None
 
 
 class Test(unittest.TestCase):
     def setUp(self):
         self.node = Node(1)
         self.linked_list = LinkedList(self.node)
+
+    def return_items(self):
+        list=[]
+        current = self.linked_list.head
+        while current:
+            list.append(current.value)
+            current = current.next
+        return list
 
     def create_list_with_duplicate_values(self):
         node2 = Node(2)
@@ -221,6 +251,14 @@ class Test(unittest.TestCase):
         self.create_list_with_duplicate_values()
         nth_to_last_element = self.linked_list.get_nth_to_last_element_without_recursion(15)
         self.assertEqual(-1, nth_to_last_element)
+
+    def testcase_deleting_node_in_middle_should_return_correctly(self):
+        self.create_list_with_duplicate_values()
+        node9=Node(9)
+        self.linked_list.append_node(node9)
+        self.linked_list.delete_element_in_middle()
+        elements_in_list = self.return_items()
+        self.assertEqual(elements_in_list, [1, 2, 1, 2, 6, 9])
 
 if __name__=='__main__':
     unittest.main()
