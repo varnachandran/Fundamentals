@@ -178,6 +178,28 @@ class LinkedList:
                                                          current_l2.next if current_l2 is not None else None,
                                                          carry)
 
+    def find_starting_node_in_circular_linked_list(self):
+        n1= self.head
+        n2=self.head
+
+        while n2.next.next is not None:
+            n1 = n1.next
+            n2 = n2.next.next
+
+            if n1 is n2:
+                break
+
+        if n2.next.next is None:
+            return -1
+
+        n1 =  self.head
+
+        while n1 is not n2:
+            n1 = n1.next
+            n2 = n2.next
+
+        return n2.value
+
 
 
 class Test(unittest.TestCase):
@@ -317,6 +339,20 @@ class Test(unittest.TestCase):
         self.linked_list.add_two_inverted_linked_lists(self.linked_list1.head, self.linked_list2.head)
         elements_in_list = self.return_items()
         self.assertEqual([6,8,0,8], elements_in_list)
+
+    def testcase_circular_linked_list_should_return_starting_node(self):
+        self.linked_list = LinkedList()
+
+        self.linked_list.head = Node(1)
+        self.linked_list.append_node(Node(2))
+        node3= Node(3)
+        self.linked_list.append_node(node3)
+        self.linked_list.append_node(Node(4))
+        self.linked_list.append_node(Node(5))
+        self.linked_list.append_node(node3)
+        starting_node_value=self.linked_list.find_starting_node_in_circular_linked_list()
+        self.assertEqual(starting_node_value, 3)
+
 
 
 if __name__=='__main__':
