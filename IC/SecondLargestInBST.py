@@ -1,12 +1,29 @@
 import unittest
 
-def find_largest(root_node):
-    if root_node is None:
-        raise ValueError('Tree must have at least 1 node')
-    if root_node.right is not None:
-        return find_largest(root_node.right)
-    return root_node.value
+def find_largest_recursion(current):
+    if not current:
+        return None
+    if not current.right:
+        return current.value
+    return find_largest_recursion(current.right)
 
+
+def find_largest_iteration(root_node):
+    while root_node:
+        if not root_node.right:
+            return root_node.value
+        root_node= root_node.right
+
+def find_second_largest_iteration(current):
+    if not current or(not current.left and not current.right):
+        raise Exception('Lesser items than expected in the tree')
+
+    while current:
+        if not current.right and current.left:
+            return find_largest_iteration(current.left)
+        if current.right and not current.right.right and not current.right.left:
+            return current.value
+        current= current.right
 
 def find_second_largest(root_node):
     if (root_node is None or
@@ -16,7 +33,7 @@ def find_second_largest(root_node):
     # Case: we're currently at largest, and largest has a left subtree,
     # so 2nd largest is largest in said subtree
     if root_node.left and not root_node.right:
-        return find_largest(root_node.left)
+        return find_largest_recursion(root_node.left)
 
     # Case: we're at parent of largest, and largest has no left subtree,
     # so 2nd largest must be current node
@@ -55,7 +72,7 @@ class Test(unittest.TestCase):
         left.insert_right(40)
         right.insert_left(60)
         right.insert_right(80)
-        actual = find_second_largest(tree)
+        actual = find_second_largest_iteration(tree)
         expected = 70
         self.assertEqual(actual, expected)
 
@@ -66,7 +83,7 @@ class Test(unittest.TestCase):
         left.insert_left(10)
         left.insert_right(40)
         right.insert_left(60)
-        actual = find_second_largest(tree)
+        actual = find_second_largest_iteration(tree)
         expected = 60
         self.assertEqual(actual, expected)
 
@@ -80,7 +97,7 @@ class Test(unittest.TestCase):
         right_left_left = right_left.insert_left(55)
         right_left.insert_right(65)
         right_left_left.insert_right(58)
-        actual = find_second_largest(tree)
+        actual = find_second_largest_iteration(tree)
         expected = 65
         self.assertEqual(actual, expected)
 
@@ -90,7 +107,7 @@ class Test(unittest.TestCase):
         tree.insert_right(70)
         left.insert_left(10)
         left.insert_right(40)
-        actual = find_second_largest(tree)
+        actual = find_second_largest_iteration(tree)
         expected = 50
         self.assertEqual(actual, expected)
 
@@ -100,7 +117,7 @@ class Test(unittest.TestCase):
         left_left = left.insert_left(30)
         left_left_left = left_left.insert_left(20)
         left_left_left.insert_left(10)
-        actual = find_second_largest(tree)
+        actual = find_second_largest_iteration(tree)
         expected = 40
         self.assertEqual(actual, expected)
 
@@ -109,7 +126,7 @@ class Test(unittest.TestCase):
         right = tree.insert_right(60)
         right_right = right.insert_right(70)
         right_right.insert_right(80)
-        actual = find_second_largest(tree)
+        actual = find_second_largest_iteration(tree)
         expected = 70
         self.assertEqual(actual, expected)
 
