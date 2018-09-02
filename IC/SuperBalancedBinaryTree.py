@@ -22,6 +22,22 @@ def is_balanced(root):
                 nodes.append((node.right, depth+1))
     return True
 
+def if_balanced_recur(root):
+    depths=[]
+    return if_balanced_recur_helper(root, depths, 0)
+
+def if_balanced_recur_helper(node,depths, depth):
+    if node is not None:
+        if not node.left and not node.right:
+            if depth not in depths:
+                depths.append(depth)
+                if len(depths) > 2 or (len(depths) == 2 and abs(depths[0] - depths[1]) > 1):
+                    return False
+    else:
+        return True
+    return if_balanced_recur_helper(node.left,depths, depth+1) and if_balanced_recur_helper(node.right,depths, depth+1)
+
+    return True
 
 class Test(unittest.TestCase):
     class BinaryTreeNode:
@@ -50,7 +66,7 @@ class Test(unittest.TestCase):
         right.insert_left(3)
         right.insert_right(4)
 
-        result = is_balanced(root)
+        result = if_balanced_recur(root)
 
         self.assertTrue(result)
 
@@ -60,7 +76,7 @@ class Test(unittest.TestCase):
         right = tree.insert_right(2)
         left.insert_left(1)
         right.insert_right(9)
-        result = is_balanced(tree)
+        result = if_balanced_recur(tree)
         self.assertTrue(result)
 
     def test_leaf_heights_differ_by_one(self):
@@ -68,7 +84,7 @@ class Test(unittest.TestCase):
         left = tree.insert_left(1)
         right = tree.insert_right(0)
         right.insert_right(7)
-        result = is_balanced(tree)
+        result = if_balanced_recur(tree)
         self.assertTrue(result)
 
     def test_leaf_heights_differ_by_two(self):
@@ -77,7 +93,7 @@ class Test(unittest.TestCase):
         right = tree.insert_right(0)
         right_right = right.insert_right(7)
         right_right.insert_right(8)
-        result = is_balanced(tree)
+        result = if_balanced_recur(tree)
         self.assertFalse(result)
 
     def test_three_leaves_total(self):
@@ -86,7 +102,7 @@ class Test(unittest.TestCase):
         right = tree.insert_right(9)
         right.insert_left(8)
         right.insert_right(5)
-        result = is_balanced(tree)
+        result = if_balanced_recur(tree)
         self.assertTrue(result)
 
     def test_both_subtrees_superbalanced(self):
@@ -96,12 +112,12 @@ class Test(unittest.TestCase):
         right_left = right.insert_left(8)
         right.insert_right(5)
         right_left.insert_left(7)
-        result = is_balanced(tree)
+        result = if_balanced_recur(tree)
         self.assertFalse(result)
 
     def test_only_one_node(self):
         tree = Test.BinaryTreeNode(1)
-        result = is_balanced(tree)
+        result = if_balanced_recur(tree)
         self.assertTrue(result)
 
     def test_linked_list_tree(self):
@@ -109,7 +125,7 @@ class Test(unittest.TestCase):
         right = tree.insert_right(2)
         right_right = right.insert_right(3)
         right_right.insert_right(4)
-        result = is_balanced(tree)
+        result = if_balanced_recur(tree)
         self.assertTrue(result)
 
 

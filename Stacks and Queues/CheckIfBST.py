@@ -18,6 +18,16 @@ def is_binary_search_tree(root):
 
     return True
 
+def is_binary_search_tree_recursion(node, lower_bound=-float('inf'), upper_bound= float('inf')):
+
+    if node is None:
+        return True
+    if node.value < lower_bound or node.value > upper_bound:
+        return False
+    return is_binary_search_tree_recursion(node.left, lower_bound, node.value) and \
+           is_binary_search_tree_recursion(node.right, node.value, upper_bound)
+
+
 # Tests
 
 class Test(unittest.TestCase):
@@ -44,7 +54,7 @@ class Test(unittest.TestCase):
         left.insert_right(40)
         right.insert_left(60)
         right.insert_right(80)
-        result = is_binary_search_tree(tree)
+        result = is_binary_search_tree_recursion(tree)
         self.assertTrue(result)
 
     def test_both_subtrees_valid(self):
@@ -55,7 +65,7 @@ class Test(unittest.TestCase):
         left.insert_right(60)
         right.insert_left(70)
         right.insert_right(90)
-        result = is_binary_search_tree(tree)
+        result = is_binary_search_tree_recursion(tree)
         self.assertFalse(result)
 
     def test_descending_linked_list(self):
@@ -64,7 +74,7 @@ class Test(unittest.TestCase):
         left_left = left.insert_left(30)
         left_left_left = left_left.insert_left(20)
         left_left_left.insert_left(10)
-        result = is_binary_search_tree(tree)
+        result = is_binary_search_tree_recursion(tree)
         self.assertTrue(result)
 
     def test_out_of_order_linked_list(self):
@@ -72,12 +82,12 @@ class Test(unittest.TestCase):
         right = tree.insert_right(70)
         right_right = right.insert_right(60)
         right_right.insert_right(80)
-        result = is_binary_search_tree(tree)
+        result = is_binary_search_tree_recursion(tree)
         self.assertFalse(result)
 
     def test_one_node_tree(self):
         tree = Test.BinaryTreeNode(50)
-        result = is_binary_search_tree(tree)
+        result = is_binary_search_tree_recursion(tree)
         self.assertTrue(result)
 
 
