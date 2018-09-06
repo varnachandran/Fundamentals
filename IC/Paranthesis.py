@@ -1,5 +1,4 @@
 import unittest
-from collections import deque
 
 
 def get_closing_paren(sentence, opening_paren_index):
