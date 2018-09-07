@@ -21,7 +21,6 @@ class LinkedList:
             current.next = node
 
     def is_cycle(self):
-        
         pointer1 = self.head
         pointer2 = self.head
 
