@@ -1,18 +1,10 @@
 import random
 
-def rand7():
-    return random.randint(1,7)
+def simulate_7_sided_die():
+    result = (random.randint(1,5) - 1) *5 + random.randint(1,5)
 
-def simulate_5sided_die():
-    number = rand7()
-    while number > 5:
-        number = rand7()
-    return number
+    while result > 21:
+        result = (random.randint(1, 5) - 1) * 5 + random.randint(1, 5)
+    return result % 7 +1
 
-def simulate_recursion():
-    number = rand7()
-    if number > 5:
-        number= simulate_recursion()
-    return number
-
-print(simulate_recursion())
+print simulate_7_sided_die()
